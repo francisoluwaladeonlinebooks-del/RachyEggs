@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-cinzel: 'Cinzel', 'Playfair Display', serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3, .font-serif-heading {
+    font-family: var(--font-serif);
+  }
+
+  .font-brand {
+    font-family: var(--font-cinzel);
+  }
+}
+
+/* Subtle vintage parchment eggshell background pattern */
+.bg-parchment-pattern {
+  background-color: #fcf9f2;
+  background-image: radial-gradient(#e5dec9 0.75px, transparent 0.75px), radial-gradient(#ece4d0 0.75px, #fcf9f2 0.75px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+.dark .bg-parchment-pattern {
+  background-color: #171513;
+  background-image: radial-gradient(#2d2822 0.75px, transparent 0.75px), radial-gradient(#26221d 0.75px, #171513 0.75px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+/* Focus visibility for accessibility WCAG AA */
+*:focus-visible {
+  outline: 2px solid #b91c1c;
+  outline-offset: 2px;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1ebd8;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1c1917;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4a373;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #78350f;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b91c1c;
+}

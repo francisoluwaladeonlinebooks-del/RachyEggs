@@ -1,0 +1,6 @@
+{
+  "name": "This Morning's Eggs",
+  "description": "Farm-fresh pasture-raised organic eggs gathered at dawn from Shields Poultry Farm. Discover heritage breeds, organic cartons, and doorstep delivery.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
