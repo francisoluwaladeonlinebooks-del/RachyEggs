@@ -88,7 +88,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <MapPin className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-semibold block text-stone-900 dark:text-stone-100">Rachy Fresh Eggs Hub</span>
-                  <span>Ganaja Junction / Lokongoma Road</span>
+                  <span>No. 20 Queensland Hotel, Phase 2</span>
                   <span className="block">Lokoja, Kogi State, Nigeria</span>
                 </div>
               </li>
@@ -204,14 +204,6 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
               <li>
                 <button 
-                  onClick={() => onNavigate('about')} 
-                  className="hover:text-red-700 dark:hover:text-red-400 transition-colors cursor-pointer"
-                >
-                  About Us
-                </button>
-              </li>
-              <li>
-                <button 
                   onClick={() => onNavigate('products')} 
                   className="hover:text-red-700 dark:hover:text-red-400 transition-colors cursor-pointer"
                 >
@@ -228,18 +220,18 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
               <li>
                 <button 
-                  onClick={() => onNavigate('delivery')} 
-                  className="hover:text-red-700 dark:hover:text-red-400 transition-colors cursor-pointer"
-                >
-                  Delivery Information
-                </button>
-              </li>
-              <li>
-                <button 
                   onClick={() => onNavigate('contact')} 
                   className="hover:text-red-700 dark:hover:text-red-400 transition-colors cursor-pointer"
                 >
                   Contact Us
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => onNavigate('about')} 
+                  className="hover:text-red-700 dark:hover:text-red-400 transition-colors cursor-pointer"
+                >
+                  About Us
                 </button>
               </li>
             </ul>

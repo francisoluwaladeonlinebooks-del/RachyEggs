@@ -28,10 +28,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   if (!isOpen) return null;
 
+  const totalCrates = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
   const discount = appliedPromo ? subtotal * 0.1 : 0;
-  const shipping = subtotal >= 25 || subtotal === 0 ? 0 : 3.50;
-  const total = Math.max(0, subtotal - discount + shipping);
+  const shippingFee = totalCrates >= 5 || totalCrates === 0 ? 0 : 1000;
+  const total = Math.max(0, subtotal - discount + shippingFee);
 
   const handlePromoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -208,11 +209,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               )}
               <div className="flex justify-between">
                 <span>Lokoja Dispatch Delivery</span>
-                <span>{shipping === 0 ? 'FREE' : `₦${(shipping * 300).toLocaleString()}`}</span>
+                <span>{shippingFee === 0 ? 'FREE' : `₦${shippingFee.toLocaleString()}`}</span>
               </div>
               <div className="flex justify-between text-sm font-bold font-serif text-stone-900 dark:text-stone-100 pt-1 border-t border-stone-200 dark:border-stone-800">
                 <span>Total Amount Due</span>
-                <span>₦{(subtotal - discount + (shipping === 0 ? 0 : 1000)).toLocaleString()}</span>
+                <span>₦{total.toLocaleString()}</span>
               </div>
             </div>
 

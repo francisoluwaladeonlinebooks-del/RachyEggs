@@ -12,7 +12,7 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({ isOpen, on
     code: 'RFE-LKJ-01',
     gatherDate: 'Gathered Today at 05:30 AM',
     flock: 'Golden Layer Flock Alpha (Under The Rachy Brand)',
-    pastureZone: 'Lokoja Commercial Farm Hub (Kogi State)',
+    pastureZone: 'No. 20 Queensland Hotel Hub, Phase 2, Lokoja (Kogi State)',
     crateStandard: '30 Fresh Eggs per Molded Pulp Crate',
     feedPurity: 'Calcium & Protein Fortified Maize & Soy Grains',
     airCellDepth: 'Grade AA (Fresh Dense Albumen, Deep Golden Yolk)',

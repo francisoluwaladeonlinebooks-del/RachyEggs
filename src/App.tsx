@@ -91,8 +91,30 @@ export default function App() {
     };
   });
 
-  // Active section & search
-  const [activeSection, setActiveSection] = useState('home');
+  // Page routing state: 'home' | 'products' | 'wholesale' | 'contact' | 'about'
+  const [activeSection, setActiveSection] = useState<'home' | 'products' | 'wholesale' | 'contact' | 'about'>(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace('#', '');
+      if (['home', 'products', 'wholesale', 'contact', 'about'].includes(hash)) {
+        return hash as any;
+      }
+    }
+    return 'home';
+  });
+
+  // Listen to hash changes
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (['home', 'products', 'wholesale', 'contact', 'about'].includes(hash)) {
+        setActiveSection(hash as any);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
   const [searchQuery, setSearchQuery] = useState('');
 
   // Modals state
@@ -164,17 +186,11 @@ export default function App() {
     localStorage.setItem('rfe_cookie_prefs', JSON.stringify(prefs));
   };
 
-  const handleNavigate = (section: string) => {
-    setActiveSection(section);
-    if (section === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    const element = document.getElementById(section);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const handleNavigate = (page: string) => {
+    const targetPage = (['home', 'products', 'wholesale', 'contact', 'about'].includes(page) ? page : 'home') as any;
+    setActiveSection(targetPage);
+    window.location.hash = targetPage;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
@@ -190,7 +206,7 @@ export default function App() {
         Skip to main content
       </a>
 
-      {/* Main Header (Exact design: top bar with Rachy Fresh Eggs & The Rachy Brand + dark navigation bar) */}
+      {/* Main Header (5 Pages: Home, Our Products, Wholesale Orders, Contact Us, About Us) */}
       <Header
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
@@ -204,47 +220,226 @@ export default function App() {
         onSearchChange={setSearchQuery}
       />
 
-      {/* Main Content Area */}
+      {/* Main Page Content Router */}
       <main id="main-content" className="flex-1">
-        {/* 1. Hero Carousel (Rachy Fresh Eggs, 30 Eggs per crate, retail and wholesale in Lokoja & nationwide) */}
-        <Hero 
-          onOrderNow={() => {
-            const el = document.getElementById('products');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-          }} 
-        />
+        
+        {/* PAGE 1: HOME */}
+        {activeSection === 'home' && (
+          <div className="animate-fadeIn">
+            {/* Hero Carousel */}
+            <Hero onOrderNow={() => handleNavigate('products')} />
 
-        {/* 2. HOW IT WORKS (3 steps: SELECT, SCHEDULE, DELIVERED) */}
-        <HowItWorks />
+            {/* How It Works (Select, Schedule, Delivered) */}
+            <HowItWorks />
 
-        {/* 3. OUR PRODUCTS: Small (₦5,500), Medium (₦6,500), Jumbo (₦8,000) - 30 eggs per crate */}
-        <OurProducts
-          products={PRODUCTS_LIST}
-          onAddToCart={handleAddToCart}
-          onQuickView={(p) => setQuickViewProduct(p)}
-          searchFilter={searchQuery}
-        />
+            {/* Featured Products Section with direct link to Our Products */}
+            <OurProducts
+              products={PRODUCTS_LIST}
+              onAddToCart={handleAddToCart}
+              onQuickView={(p) => setQuickViewProduct(p)}
+              searchFilter={searchQuery}
+            />
 
-        {/* 4. Split Featured Banner: Sizzling Pan (Left) + Red Banner (Right) */}
-        <FeaturedBanner onReadMore={() => setIsTimelineOpen(true)} />
+            {/* Split Callout Banner */}
+            <FeaturedBanner onReadMore={() => setIsTimelineOpen(true)} />
 
-        {/* 5. WHOLESALE ORDERS (Requested Page: Wholesale Orders) */}
-        <WholesaleOrders />
+            {/* Wholesale & Commercial teaser banner linking to Wholesale Orders */}
+            <section className="bg-[#f0ebe0] dark:bg-[#1b1916] py-12 px-4 sm:px-6 border-b border-stone-200 dark:border-stone-800">
+              <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-left">
+                <div>
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-red-700 dark:text-red-400">
+                    B2B Commercial Distribution
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-bold font-serif text-stone-900 dark:text-stone-100 mt-1">
+                    Need Wholesale Supplies for Your Provision Store, Supermarket or Bakery?
+                  </h3>
+                  <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-serif max-w-2xl mt-1">
+                    Enjoy scheduled delivery, volume discounts, zero-breakage replacement guarantee, and flexible payment terms.
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleNavigate('wholesale')}
+                  className="shrink-0 px-6 py-3 bg-[#c91a1a] hover:bg-red-700 text-white font-bold text-xs uppercase tracking-widest rounded-xs shadow-md transition-colors cursor-pointer"
+                >
+                  View Wholesale Orders &amp; Calculator &rarr;
+                </button>
+              </div>
+            </section>
+          </div>
+        )}
 
-        {/* 6. DELIVERY INFORMATION (Requested Page: Delivery Information) */}
-        <DeliveryInfo />
+        {/* PAGE 2: OUR PRODUCTS */}
+        {activeSection === 'products' && (
+          <div className="animate-fadeIn">
+            {/* Breadcrumb banner */}
+            <div className="bg-[#ede7d8] dark:bg-[#1c1a17] py-4 px-4 sm:px-6 border-b border-stone-200 dark:border-stone-800">
+              <div className="max-w-7xl mx-auto flex items-center justify-between text-xs font-serif text-stone-600 dark:text-stone-400">
+                <div className="flex items-center gap-2">
+                  <button onClick={() => handleNavigate('home')} className="hover:text-red-700 dark:hover:text-red-400 cursor-pointer">
+                    Home
+                  </button>
+                  <span>/</span>
+                  <span className="font-bold text-stone-900 dark:text-stone-100">Our Products</span>
+                </div>
+                <span className="text-[11px] text-amber-800 dark:text-amber-400 font-sans font-bold hidden sm:inline">
+                  All Crates Contain 30 Fresh Eggs
+                </span>
+              </div>
+            </div>
 
-        {/* 7. Quality Standards & Assurance */}
-        <QualityStandards onOpenTraceability={() => setIsTraceabilityOpen(true)} />
+            {/* Full Products Showcase */}
+            <OurProducts
+              products={PRODUCTS_LIST}
+              onAddToCart={handleAddToCart}
+              onQuickView={(p) => setQuickViewProduct(p)}
+              searchFilter={searchQuery}
+            />
 
-        {/* 8. ABOUT US (Requested Page: About Us) */}
-        <AboutUs />
+            {/* Crate Specs & Comparison Table */}
+            <section className="w-full bg-[#fbf8f1] dark:bg-[#181614] py-12 px-4 sm:px-6 lg:px-8 border-b border-stone-200 dark:border-stone-800">
+              <div className="max-w-5xl mx-auto text-left">
+                <h3 className="text-xl sm:text-2xl font-bold font-serif text-stone-900 dark:text-stone-100 mb-2">
+                  Egg Crate Specification &amp; Culinary Guide
+                </h3>
+                <p className="text-xs text-stone-500 font-serif mb-6">
+                  Select the size that best aligns with your household recipes, commercial bakery formulas, or retail shelf preferences.
+                </p>
 
-        {/* 9. CONTACT US (Requested Page: Contact Us) */}
-        <ContactSection />
+                <div className="overflow-x-auto bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xs shadow-xs">
+                  <table className="w-full text-xs text-left font-serif">
+                    <thead className="bg-[#f5ede0] dark:bg-stone-800 text-[11px] uppercase font-bold tracking-wider text-stone-800 dark:text-stone-200 border-b border-stone-200 dark:border-stone-700">
+                      <tr>
+                        <th className="p-3.5">Crate Size</th>
+                        <th className="p-3.5">Price Per Crate</th>
+                        <th className="p-3.5">Eggs Per Crate</th>
+                        <th className="p-3.5">Yolk Characteristics</th>
+                        <th className="p-3.5">Recommended Applications</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-stone-200 dark:divide-stone-800 text-stone-700 dark:text-stone-300">
+                      <tr>
+                        <td className="p-3.5 font-bold text-stone-900 dark:text-stone-100">Small Size</td>
+                        <td className="p-3.5 font-bold text-[#c91a1a]">₦5,500</td>
+                        <td className="p-3.5">30 Eggs</td>
+                        <td className="p-3.5">Compact yolk, firm white</td>
+                        <td className="p-3.5">Household breakfasts, quick boiling, noodles, student meals</td>
+                      </tr>
+                      <tr>
+                        <td className="p-3.5 font-bold text-stone-900 dark:text-stone-100">Medium Size</td>
+                        <td className="p-3.5 font-bold text-[#c91a1a]">₦6,500</td>
+                        <td className="p-3.5">30 Eggs</td>
+                        <td className="p-3.5">Balanced yolk-to-white ratio</td>
+                        <td className="p-3.5">Provision stores, supermarkets, fried eggs, canteens</td>
+                      </tr>
+                      <tr>
+                        <td className="p-3.5 font-bold text-stone-900 dark:text-stone-100">Jumbo Size</td>
+                        <td className="p-3.5 font-bold text-[#c91a1a]">₦8,000</td>
+                        <td className="p-3.5">30 Eggs</td>
+                        <td className="p-3.5">Deep golden yolk, maximum volume</td>
+                        <td className="p-3.5">Commercial bakeries, luxury hotels, Shawarma, catering</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-8 p-4 bg-amber-50 dark:bg-stone-800/80 rounded-xs border border-amber-200 dark:border-stone-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="text-xs font-serif">
+                    <strong className="block text-stone-900 dark:text-stone-100">Ordering 10 or more crates?</strong>
+                    <span className="text-stone-600 dark:text-stone-400">Take advantage of our commercial bulk wholesale contract rates and scheduled doorstep deliveries.</span>
+                  </div>
+                  <button
+                    onClick={() => handleNavigate('wholesale')}
+                    className="shrink-0 px-5 py-2 bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-900 text-xs font-bold uppercase tracking-wider rounded-xs cursor-pointer"
+                  >
+                    View Wholesale Pricing
+                  </button>
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
+
+        {/* PAGE 3: WHOLESALE ORDERS */}
+        {activeSection === 'wholesale' && (
+          <div className="animate-fadeIn">
+            {/* Breadcrumb banner */}
+            <div className="bg-[#ede7d8] dark:bg-[#1c1a17] py-4 px-4 sm:px-6 border-b border-stone-200 dark:border-stone-800">
+              <div className="max-w-7xl mx-auto flex items-center justify-between text-xs font-serif text-stone-600 dark:text-stone-400">
+                <div className="flex items-center gap-2">
+                  <button onClick={() => handleNavigate('home')} className="hover:text-red-700 dark:hover:text-red-400 cursor-pointer">
+                    Home
+                  </button>
+                  <span>/</span>
+                  <span className="font-bold text-stone-900 dark:text-stone-100">Wholesale Orders</span>
+                </div>
+                <span className="text-[11px] text-amber-800 dark:text-amber-400 font-sans font-bold hidden sm:inline">
+                  Direct Farm Supply for Commercial Buyers
+                </span>
+              </div>
+            </div>
+
+            {/* Wholesale Hub & Calculator */}
+            <WholesaleOrders />
+
+            {/* Delivery Logistics & Handling Information */}
+            <DeliveryInfo />
+          </div>
+        )}
+
+        {/* PAGE 4: CONTACT US */}
+        {activeSection === 'contact' && (
+          <div className="animate-fadeIn">
+            {/* Breadcrumb banner */}
+            <div className="bg-[#ede7d8] dark:bg-[#1c1a17] py-4 px-4 sm:px-6 border-b border-stone-200 dark:border-stone-800">
+              <div className="max-w-7xl mx-auto flex items-center justify-between text-xs font-serif text-stone-600 dark:text-stone-400">
+                <div className="flex items-center gap-2">
+                  <button onClick={() => handleNavigate('home')} className="hover:text-red-700 dark:hover:text-red-400 cursor-pointer">
+                    Home
+                  </button>
+                  <span>/</span>
+                  <span className="font-bold text-stone-900 dark:text-stone-100">Contact Us</span>
+                </div>
+                <span className="text-[11px] text-amber-800 dark:text-amber-400 font-sans font-bold hidden sm:inline">
+                  Lokoja Distribution Center · Fast Dispatch
+                </span>
+              </div>
+            </div>
+
+            {/* Contact Form, Phone, Email & WhatsApp */}
+            <ContactSection />
+          </div>
+        )}
+
+        {/* PAGE 5: ABOUT US */}
+        {activeSection === 'about' && (
+          <div className="animate-fadeIn">
+            {/* Breadcrumb banner */}
+            <div className="bg-[#ede7d8] dark:bg-[#1c1a17] py-4 px-4 sm:px-6 border-b border-stone-200 dark:border-stone-800">
+              <div className="max-w-7xl mx-auto flex items-center justify-between text-xs font-serif text-stone-600 dark:text-stone-400">
+                <div className="flex items-center gap-2">
+                  <button onClick={() => handleNavigate('home')} className="hover:text-red-700 dark:hover:text-red-400 cursor-pointer">
+                    Home
+                  </button>
+                  <span>/</span>
+                  <span className="font-bold text-stone-900 dark:text-stone-100">About Us</span>
+                </div>
+                <span className="text-[11px] text-amber-800 dark:text-amber-400 font-sans font-bold hidden sm:inline">
+                  Operating Under The Rachy Brand
+                </span>
+              </div>
+            </div>
+
+            {/* About Us Company Profile & History */}
+            <AboutUs />
+
+            {/* Quality Standards & Verification */}
+            <QualityStandards onOpenTraceability={() => setIsTraceabilityOpen(true)} />
+          </div>
+        )}
+
       </main>
 
-      {/* Footer matching design image with exact page navigation */}
+      {/* Footer matching exact 5 pages */}
       <Footer
         onNavigate={handleNavigate}
         onOpenPrivacy={() => setIsPrivacyOpen(true)}
@@ -296,8 +491,7 @@ export default function App() {
         onClose={() => setIsTimelineOpen(false)}
         onOrderNow={() => {
           setIsTimelineOpen(false);
-          const el = document.getElementById('products');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
+          handleNavigate('products');
         }}
       />
 

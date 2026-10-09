@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Shield, Lock, FileText, CheckCircle2 } from 'lucide-react';
+import { BUSINESS_INFO } from '../data/farmData';
 
 interface PrivacyModalProps {
   isOpen: boolean;
@@ -41,7 +42,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
             Data Protection & Copyright Charter
           </h3>
           <span className="text-[11px] text-stone-500 font-serif">
-            Last Updated: 2026 · Shields Poultry Farm (Himmelgeister Str. 100, Düsseldorf)
+            Last Updated: 2026 · {BUSINESS_INFO.fullName} ({BUSINESS_INFO.address})
           </span>
         </div>
 
@@ -53,7 +54,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
               activeTab === 'privacy' ? 'border-red-600 text-red-600' : 'border-transparent text-stone-500'
             }`}
           >
-            GDPR Privacy Rights
+            NDPR & GDPR Privacy Rights
           </button>
           <button
             onClick={() => setActiveTab('ccpa')}
@@ -61,7 +62,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
               activeTab === 'ccpa' ? 'border-red-600 text-red-600' : 'border-transparent text-stone-500'
             }`}
           >
-            CCPA / CPRA & &quot;Do Not Sell&quot;
+            CCPA & &quot;Do Not Sell&quot;
           </button>
           <button
             onClick={() => setActiveTab('copyright')}
@@ -87,17 +88,17 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
           {activeTab === 'privacy' && (
             <div className="space-y-3">
               <h4 className="font-bold text-sm text-stone-900 dark:text-stone-100">
-                1. General Data Protection Regulation (EU GDPR)
+                1. Nigeria Data Protection Regulation (NDPR) & GDPR
               </h4>
               <p>
-                Shields Poultry Farm processes personal data exclusively for the purpose of fulfilling morning egg reservations, doorstep deliveries, and managing recurring subscription accounts under Article 6(1)(b) of the GDPR.
+                Rachy Fresh Eggs (under The Rachy Brand) processes customer data solely for managing retail deliveries, commercial wholesale supply schedules, and billing inquiries from our business office at <strong>{BUSINESS_INFO.address}</strong>.
               </p>
-              <h5 className="font-bold text-stone-900 dark:text-stone-100">Your Data Subject Rights (Articles 15–22):</h5>
+              <h5 className="font-bold text-stone-900 dark:text-stone-100">Your Data Subject Rights:</h5>
               <ul className="list-disc pl-5 space-y-1">
-                <li><strong>Right of Access (Art. 15):</strong> Request a copy of all delivery addresses and order history stored.</li>
-                <li><strong>Right to Rectification (Art. 16):</strong> Correct inaccurate contact details or delivery preferences at any time.</li>
-                <li><strong>Right to Erasure (&quot;Right to be Forgotten&quot;, Art. 17):</strong> Request deletion of your farm account and past delivery logs.</li>
-                <li><strong>Data Protection Officer:</strong> Contact dpo@thismorningseggs.com or call +49-211-96-83-058.</li>
+                <li><strong>Right of Access:</strong> Request a full copy of your order receipts, delivery locations, and business contact information.</li>
+                <li><strong>Right to Rectification:</strong> Update delivery address or store contact details at any time.</li>
+                <li><strong>Right to Erasure:</strong> Request deletion of stored phone numbers and past delivery records upon completion of orders.</li>
+                <li><strong>Contact Support:</strong> Reach out directly to {BUSINESS_INFO.email} or call {BUSINESS_INFO.phone}.</li>
               </ul>
             </div>
           )}
@@ -105,10 +106,10 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
           {activeTab === 'ccpa' && (
             <div className="space-y-3">
               <h4 className="font-bold text-sm text-stone-900 dark:text-stone-100">
-                2. California Consumer Privacy Act (CCPA & CPRA)
+                2. Data Sharing Transparency & Opt-Out
               </h4>
               <p>
-                We do not sell, rent, or trade your personal information to third-party data brokers. We only share delivery addresses with verified logistics partners responsible for doorstep egg deliveries.
+                We never sell, monetize, or disclose customer or business client information to third-party marketing brokers. Data is exclusively shared with authorized delivery drivers fulfilling egg crate drop-offs in Lokoja and regional transit hubs.
               </p>
               
               <div className="p-4 bg-amber-50 dark:bg-stone-900 rounded-xs border border-amber-200 dark:border-stone-700 my-2">
@@ -116,7 +117,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
                   Do Not Sell or Share My Personal Information
                 </h5>
                 <p className="text-xs text-stone-600 dark:text-stone-400 mb-3">
-                  Click below to record your permanent opt-out preference against any prospective commercial data sharing.
+                  Click below to record your permanent opt-out preference against commercial data sharing.
                 </p>
 
                 {optOutConfirmed ? (
@@ -142,10 +143,10 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
                 3. Copyright & Intellectual Property Protection
               </h4>
               <p>
-                All visual design layouts, trade dress, trademarks, the &quot;This Morning&apos;s Eggs&quot; logo emblem, the &quot;A Guarantee of Quality&quot; seal, culinary recipes, photography, and farm texts are the exclusive intellectual property of Shields Poultry Farm © 2017–2026.
+                All visual layouts, trademarks, &quot;The Rachy Brand&quot; logo emblems, trade dress, product photographs, and text content are the exclusive intellectual property of Rachy Fresh Eggs (under The Rachy Brand) © 2026.
               </p>
               <p>
-                Any unauthorized reproduction, scraping, commercial redistribution, or reverse engineering of website assets without prior written consent from Shields Poultry Farm is strictly prohibited and subject to international copyright enforcement under the Berne Convention and DMCA.
+                Headquarters: {BUSINESS_INFO.address}. Unauthorized commercial reproduction or imitation of brand assets is strictly prohibited.
               </p>
             </div>
           )}
@@ -153,17 +154,11 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
           {activeTab === 'security' && (
             <div className="space-y-3">
               <h4 className="font-bold text-sm text-stone-900 dark:text-stone-100">
-                4. Cybersecurity & Anti-Hacking Defenses
+                4. Platform Security & Defense
               </h4>
               <p>
-                Our web storefront utilizes defense-in-depth protection:
+                Our ordering platform features enterprise-grade SSL 256-bit encryption, strict CSRF/XSS input sanitization, and secure payment handling via verified Nigerian payment gateways.
               </p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>End-to-end TLS 1.3 encryption with strict HTTP Strict Transport Security (HSTS).</li>
-                <li>Content Security Policy (CSP) headers protecting against cross-site scripting (XSS) and code injection.</li>
-                <li>Client-side input sanitization across all search queries, newsletter inputs, and checkout forms.</li>
-                <li>PCI-DSS Level 1 compliant tokenized payment handling without storing credit card details on farm servers.</li>
-              </ul>
             </div>
           )}
 

@@ -60,8 +60,8 @@ export const ContactSection: React.FC = () => {
               <div className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold block text-stone-900 dark:text-stone-100">Distribution Location</span>
-                  <span>{BUSINESS_INFO.address}</span>
+                  <span className="font-bold block text-stone-900 dark:text-stone-100">Business Address</span>
+                  <span className="block font-medium">No. 20 Queensland Hotel, Phase 2</span>
                   <span className="block text-stone-500">Lokoja, Kogi State, Nigeria</span>
                 </div>
               </div>

@@ -44,15 +44,14 @@ export const Header: React.FC<HeaderProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
 
-  // Exact website pages requested by the user:
-  // Home, About Us, Our Products, Wholesale Orders, Delivery Information, Contact Us
+  // Exact website pages requested:
+  // Home, Our Products, Wholesale Orders, Contact Us, About Us
   const navLinks = [
     { id: 'home', label: 'HOME' },
-    { id: 'about', label: 'ABOUT US' },
     { id: 'products', label: 'OUR PRODUCTS' },
     { id: 'wholesale', label: 'WHOLESALE ORDERS' },
-    { id: 'delivery', label: 'DELIVERY INFORMATION' },
     { id: 'contact', label: 'CONTACT US' },
+    { id: 'about', label: 'ABOUT US' },
   ];
 
   const handleLinkClick = (id: string) => {
